@@ -25,12 +25,22 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('profile.edit'); // プロフィール設定画面へ
             }
 
-            return redirect()->intended('/dashboard'); // 通常遷移先
+            return redirect()->intended('/mypage'); // 通常遷移先
         }
 
         return back()->withErrors([
             'email' => 'ログイン情報が正しくありません',
         ]);
     }
+    public function destroy(Request $request)
+    {
+       Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login'); 
+    }
+
 }
 

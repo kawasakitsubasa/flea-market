@@ -13,9 +13,29 @@
     <div class="container">
         <h1>ログイン</h1>
 
+        {{-- ✅ ログアウト後のステータスメッセージ --}}
+        @if (session('status'))
+            <div class="status-box">
+                {{ session('status') }}
+            </div>
+        @endif
+
+        {{-- 🔴 エラーメッセージ表示ブロック --}}
+        @if ($errors->any())
+            <div class="error-box">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
-            <input type="email" name="email" placeholder="メールアドレス" required>
+
+            {{-- 🔹 入力値を保持するため old() を追加 --}}
+            <input type="email" name="email" placeholder="メールアドレス" value="{{ old('email') }}" required>
             <input type="password" name="password" placeholder="パスワード" required>
             <button type="submit">ログイン</button>
         </form>
@@ -24,3 +44,4 @@
     </div>
 </body>
 </html>
+
