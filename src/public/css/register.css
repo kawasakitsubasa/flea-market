@@ -48,3 +48,10 @@ a {
     font-size: 14px;
     color: #007bff;
 }
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+}

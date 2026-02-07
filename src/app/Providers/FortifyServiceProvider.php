@@ -15,47 +15,28 @@ use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        //
-    }
-
     public function boot(): void
     {
-        // --- Fortifyの基本アクション設定 ---
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
-        // --- ログインのレート制限 ---
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(
                 Str::lower($request->input(Fortify::username())) . '|' . $request->ip()
             );
-
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        // --- 二段階認証のレート制限 ---
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-        // --- ログイン画面のカスタムビュー ---
-        Fortify::loginView(function () {
-            return view('auth.login');
-        });
-
-        // --- 会員登録画面のカスタムビュー ---
-        Fortify::registerView(function () {
-            return view('auth.register');
-        });
-
-        // --- メール認証画面のカスタムビュー ---
-        Fortify::verifyEmailView(function () {
-            return view('auth.verify-email');
-        });
+        Fortify::loginView(fn () => view('auth.login'));
+        Fortify::registerView(fn () => view('auth.register'));
+        Fortify::verifyEmailView(fn () => view('auth.verify-email'));
     }
 }
+
 
