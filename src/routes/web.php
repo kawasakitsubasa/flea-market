@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ProductController;
 
 // トップページ（仮）
 Route::get('/', function () {
@@ -23,4 +24,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage', function () {
         return view('mypage');
     })->name('mypage');
+
+    Route::get('/sell', function () {
+        return view('sell');
+    })->name('sell');
+    
+    Route::post('/sell', [ProductController::class, 'store'])->name('sell.store');
+
 });
