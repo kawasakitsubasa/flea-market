@@ -22,7 +22,7 @@
                 </button>
 
                 <a href="#">マイページ</a>
-                <button>出品</button>
+                <button onclick="location.href='{{ route('sell') }}'">出品</button>
             </nav>
         </div>
     </header>
