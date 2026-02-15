@@ -6,91 +6,95 @@
     <link rel="stylesheet" href="{{ asset('css/sell.css') }}">
 </head>
 <body>
-    <header>
-        <div class="header-inner">
-            <img src="{{ asset('images/coachtech-logo.png') }}" alt="COACHTECH Logo">
-            <input type="text" placeholder="なにをお探しですか？">
-            <nav>
-                <a href="{{ route('logout') }}"
-                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
-                <a href="{{ route('mypage') }}">マイページ</a>
-                <button onclick="location.href='{{ route('sell') }}'">出品</button>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-            </nav>
-        </div>
-    </header>
+<header>
+    <div class="header-inner">
+        <img src="{{ asset('images/coachtech-logo.png') }}" alt="COACHTECH Logo">
+        <input type="text" placeholder="なにをお探しですか？">
+        <nav>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+                @csrf
+            </form>
 
-    <main>
-        <h1>商品の出品</h1>
+            <button onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                ログアウト
+            </button>
 
-        <form method="POST" action="{{ route('sell.store') }}">
-            @csrf
+            <a href="{{ route('profile') }}">マイページ</a>
 
-            <section class="image-upload">
-                <p>商品画像</p>
-                <div class="upload-box">
-                    <label>
-                        <input type="file" style="display: none;">
-                        <span>画像を選択する</span>
-                    </label>
+            <button onclick="location.href='{{ route('sell') }}'">出品</button>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <h1>商品の出品</h1>
+
+    <form method="POST" action="{{ route('sell.store') }}" enctype="multipart/form-data">
+        @csrf
+
+        <!-- 商品画像 -->
+        <section class="image-upload">
+            <p>商品画像</p>
+            <div class="upload-box">
+                <label>
+                    <input type="file" name="image" style="display: none;">
+                    <span>画像を選択する</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- 商品詳細 -->
+        <section class="product-details">
+            <h2>商品の詳細</h2>
+
+            <!-- カテゴリー -->
+            <div class="category">
+                <p>カテゴリー</p>
+                <div class="tags">
+                    @php
+                        $categories = [
+                            'ファッション','家電','インテリア','レディース','メンズ',
+                            'コスメ','本','ゲーム','スポーツ','キッチン',
+                            'ハンドメイド','アクセサリー','おもちゃ','ベビー・キッズ'
+                        ];
+                    @endphp
+
+                    @foreach($categories as $category)
+                        <label class="tag">
+                            <input type="checkbox" name="categories[]" value="{{ $category }}" hidden>
+                            <span>{{ $category }}</span>
+                        </label>
+
+                    @endforeach
                 </div>
-            </section>
+            </div>
 
-            <section class="product-details">
-                <h2>商品の詳細</h2>
-                <div class="category">
-                    <p>カテゴリー</p>
-                    <div class="tags">
-                        <span class="tag">ファッション</span>
-                        <span class="tag">家電</span>
-                        <span class="tag">インテリア</span>
-                        <span class="tag">レディース</span>
-                        <span class="tag">メンズ</span>
-                        <span class="tag">コスメ</span>
-                        <span class="tag">本</span>
-                        <span class="tag">ゲーム</span>
-                        <span class="tag">スポーツ</span>
-                        <span class="tag">キッチン</span>
-                        <span class="tag">ハンドメイド</span>
-                        <span class="tag">アクセサリー</span>
-                        <span class="tag">おもちゃ</span>
-                        <span class="tag">ベビー・キッズ</span>
-                    </div>
-                </div>
+            <!-- 状態 -->
+            <div class="condition">
+                <p>商品の状態</p>
+                <select name="condition">
+                    <option disabled selected>選択してください</option>
+                    <option value="良好">良好</option>
+                    <option value="目立った傷や汚れなし">目立った傷や汚れなし</option>
+                    <option value="やや傷や汚れあり">やや傷や汚れあり</option>
+                    <option value="状態が悪い">状態が悪い</option>
+                </select>
+            </div>
 
-                <div class="condition">
-                    <p>商品の状態</p>
-                    <select>
-                        <option disabled selected>選択してください</option>
-                        <option>良好</option>
-                        <option>目立った傷や汚れなし</option>
-                        <option>やや傷や汚れあり</option>
-                        <option>状態が悪い</option>
-                    </select>
-                </div>
+            <!-- 商品情報 -->
+            <div class="info">
+                <p>商品名と説明</p>
+                <input type="text" name="name" placeholder="商品名">
+                <input type="text" name="brand" placeholder="ブランド名">
+                <textarea name="description" placeholder="商品の説明"></textarea>
+                <input type="number" name="price" placeholder="販売価格">
+            </div>
+        </section>
 
-                <div class="info">
-                    <p>商品名と説明</p>
-                    <input type="text" placeholder="商品名">
-                    <input type="text" placeholder="ブランド名">
-                    <textarea placeholder="商品の説明"></textarea>
-                    <input type="text" placeholder="販売価格">
-                </div>
-            </section>
+        <button type="submit" class="submit-button">出品する</button>
+    </form>
+</main>
 
-            <button type="submit" class="submit-button">出品する</button>
-        </form>
-    </main>
-
-    <script>
-        document.querySelectorAll('.tag').forEach(function(tag) {
-            tag.addEventListener('click', function() {
-                tag.classList.toggle('selected');
-            });
-        });
-    </script>
 </body>
 </html>
 
