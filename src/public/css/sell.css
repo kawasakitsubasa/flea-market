@@ -144,23 +144,38 @@ select {
     box-sizing: border-box;
 }
 
-/* 🔽 タグのスタイル（選択前） */
+/* ===== カテゴリータグ ===== */
+
 .tag {
+    display: inline-block;
+    margin: 6px 8px 6px 0;
+    cursor: pointer;
+}
+
+/* checkbox非表示 */
+.tag input {
+    display: none;
+}
+
+/* 通常状態 */
+.tag span {
     display: inline-block;
     border: 1px solid #ff6b6b;
     color: #ff6b6b;
-    padding: 5px 10px;
-    border-radius: 15px;
-    cursor: pointer;
-    margin: 5px;
-    transition: background-color 0.2s, color 0.2s;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background-color: #fff;
 }
 
-/* 🔽 タグのスタイル（選択後） */
-.tag.selected {
+/* 🔥 チェックされたら全部赤 */
+.tag input:checked + span {
     background-color: #ff6b6b;
-    color: white;
+    color: #fff;
+    border: 1px solid #ff6b6b;
 }
+
 
 
 

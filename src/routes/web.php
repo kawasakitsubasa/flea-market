@@ -5,30 +5,38 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProductController;
 
-// トップページ（仮）
+// トップページ
 Route::get('/', function () {
     return view('welcome');
 });
 
+// ログイン
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->name('login');
 
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+// ログアウト
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
+
 // 認証済みユーザー専用
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/mypage', [ProductController::class, 'mypage'])
+        ->name('mypage');
+
+    Route::get('/profile', function () {
+        return view('profile');
+    })->name('profile');
 
     Route::get('/profile/setup', [ProfileController::class, 'setup'])->name('profile.setup');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::get('/mypage', function () {
-        return view('mypage');
-    })->name('mypage');
-
     Route::get('/sell', function () {
         return view('sell');
     })->name('sell');
-    
-    Route::post('/sell', [ProductController::class, 'store'])->name('sell.store');
 
+    Route::post('/sell', [ProductController::class, 'store'])
+        ->name('sell.store');
 });
+
