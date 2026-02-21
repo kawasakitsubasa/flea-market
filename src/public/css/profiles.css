@@ -74,21 +74,31 @@ header nav button {
 
 /* ===== タブ ===== */
 .tabs {
+    margin-top: 30px;
     display: flex;
-    gap: 40px;
-    padding: 0 40px;
-    border-bottom: 1px solid #aaa;
-    font-weight: bold;
+    gap: 20px;
+    border-bottom: 1px solid #ccc;
 }
 
-.tabs span {
+.tab-button {
+    background: none;
+    border: none;
     padding: 10px 0;
     cursor: pointer;
-    color: #777;
+    font-size: 16px;
 }
 
-.tabs .active {
-    color: #ff4d4d;
+.tab-button.active {
+    color: red;
+    border-bottom: 2px solid red;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
 
 /* ===== 商品一覧 ===== */
@@ -114,4 +124,11 @@ header nav button {
 
 .product-name {
     margin-top: 10px;
+}
+
+.product-image img{
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
 }

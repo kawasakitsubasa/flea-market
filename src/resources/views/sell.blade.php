@@ -37,7 +37,7 @@
             <p>商品画像</p>
             <div class="upload-box">
                 <label>
-                    <input type="file" name="image" style="display: none;">
+                    <input type="text" name="image_url" placeholder="画像URLを入力してください">
                     <span>画像を選択する</span>
                 </label>
             </div>

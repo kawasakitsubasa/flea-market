@@ -28,22 +28,58 @@
         <div class="profile-top">
             <div class="avatar"></div>
             <h2>ユーザー名</h2>
-            <button class="edit-button">プロフィールを編集</button>
+            <button class="edit-button" onclick="location.href='{{ route('profile.edit') }}'">
+                プロフィールを編集
+            </button>
         </div>
 
         <div class="tabs">
-            <span class="active">出品した商品</span>
-            <span>購入した商品</span>
+           <button class="tab-button active" onclick="showTab('sell')">
+              出品した商品
+           </button>
+           <button class="tab-button" onclick="showTab('buy')">
+              購入した商品
+            </button>
         </div>
 
-        <div class="product-list">
-            @for ($i = 0; $i < 8; $i++)
+        <!-- 出品商品 -->
+        <div id="sell" class="tab-content active">
+           <div class="product-list">
+        @forelse ($products as $product)
             <div class="product-item">
-                <div class="product-image">商品画像</div>
-                <div class="product-name">商品名</div>
+                <div class="product-image">
+                    <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                </div>
+                <div class="product-name">{{ $product->name }}</div>
             </div>
-            @endfor
+        @empty
+            <p>出品した商品がありません</p>
+        @endforelse
+            </div>
         </div>
+
+<!-- 購入商品（今はダミー） -->
+    <div id="buy" class="tab-content">
+       <div class="product-list">
+        <p>購入した商品はまだありません</p>
+       </div>
+    </div>
     </main>
+
+    <script>
+    function showTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(function(content) {
+        content.classList.remove('active');
+    });
+
+    document.querySelectorAll('.tab-button').forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+
+    document.getElementById(tab).classList.add('active');
+
+    event.target.classList.add('active');
+    }
+    </script>
 </body>
 </html>
