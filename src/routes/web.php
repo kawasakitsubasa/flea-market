@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 
 // トップページ
 Route::get('/', function () {
@@ -25,7 +26,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('mypage');
 
     Route::get('/profile', function () {
-        return view('profile');
+    $products = Product::latest()->get(); // まずはダミー全件表示
+    return view('profile', compact('products'));
     })->name('profile');
 
     Route::get('/profile/setup', [ProfileController::class, 'setup'])->name('profile.setup');
