@@ -32,25 +32,29 @@
         <span class="active">マイリスト</span>
     </div>
 
-    <div class="product-list">
+   <div class="product-list">
   @forelse ($products as $product)
-    <div class="product-item">
-      <div class="product-image">
-        <img src="{{ $product->image }}" alt="{{ $product->name }}">
+
+    <a href="{{ route('product.show', $product->id) }}" class="product-link">
+      <div class="product-item">
+        <div class="product-image">
+          <img src="{{ $product->image }}" alt="{{ $product->name }}">
+        </div>
+
+        <div class="product-info">
+          <div class="product-title">{{ $product->name }}</div>
+
+          @if($product->brand)
+            <div class="product-brand">{{ $product->brand }}</div>
+          @endif
+
+          <div class="product-condition">{{ $product->condition }}</div>
+
+          <div class="product-price">¥{{ number_format($product->price) }}</div>
+        </div>
       </div>
+    </a>
 
-      <div class="product-info">
-        <div class="product-title">{{ $product->name }}</div>
-
-        @if($product->brand)
-          <div class="product-brand">{{ $product->brand }}</div>
-        @endif
-
-        <div class="product-condition">{{ $product->condition }}</div>
-
-        <div class="product-price">¥{{ number_format($product->price) }}</div>
-      </div>
-    </div>
   @empty
     <p>まだ出品した商品がありません</p>
   @endforelse

@@ -104,3 +104,8 @@ nav button {
     margin-top: 10px;
     font-size: 14px;
 }
+
+.product-link {
+    text-decoration: none;
+    color: inherit;
+}
