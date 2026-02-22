@@ -11,6 +11,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// 🔥 商品詳細（ログイン不要にする）
+Route::get('/product/{id}', [ProductController::class, 'show'])
+    ->name('product.show');
+
 // ログイン
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->name('login');
@@ -22,23 +26,31 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 // 認証済みユーザー専用
 Route::middleware(['auth'])->group(function () {
 
+    // マイページ
     Route::get('/mypage', [ProductController::class, 'mypage'])
         ->name('mypage');
 
+    // プロフィールページ
     Route::get('/profile', function () {
-    $products = Product::latest()->get(); // まずはダミー全件表示
-    return view('profile', compact('products'));
+        $products = Product::latest()->get();
+        return view('profile', compact('products'));
     })->name('profile');
 
+    // プロフィール編集
     Route::get('/profile/setup', [ProfileController::class, 'setup'])->name('profile.setup');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
+    // 出品
     Route::get('/sell', function () {
         return view('sell');
     })->name('sell');
 
     Route::post('/sell', [ProductController::class, 'store'])
         ->name('sell.store');
-});
 
+    Route::middleware(['auth'])->group(function () {
+    Route::post('/product/{id}/comment', [ProductController::class, 'commentStore'])
+        ->name('product.comment.store');
+    });
+});

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
+use App\Models\Comment;
 
 class ProductController extends Controller
 {
@@ -16,7 +18,7 @@ class ProductController extends Controller
         'description' => ['required'],
         'price' => ['required', 'integer'],
         'condition' => ['required'],
-        'image_url' => ['nullable', 'url'], // ✅追加（URL形式チェック）
+        'image_url' => ['nullable', 'url'], 
     ]);
 
     Product::create([
@@ -26,8 +28,19 @@ class ProductController extends Controller
         'description' => $request->description,
         'price' => $request->price,
         'condition' => $request->condition,
-        'image' => $request->image_url, // ✅ここが重要（imageカラムにURL保存）
+        'image' => $request->image_url, 
     ]);
+
+    if ($request->categories) {
+    $categoryIds = [];
+
+    foreach ($request->categories as $categoryName) {
+        $category = Category::firstOrCreate(['name' => $categoryName]);
+        $categoryIds[] = $category->id;
+    }
+
+    $product->categories()->sync($categoryIds);
+    }
 
     return redirect()->route('mypage');
     }
@@ -37,5 +50,28 @@ class ProductController extends Controller
 
         return view('mypage', compact('products'));
     }
+    public function show($id)
+    {
+        $product = Product::with(['categories', 'comments.user'])
+        ->findOrFail($id);
 
+        return view('product.show', compact('product'));
+    }
+
+    public function commentStore(Request $request, $id)
+    {
+    $request->validate([
+        'content' => ['required', 'string', 'max:500'],
+    ], [
+        'content.required' => 'コメントを入力してください',
+    ]);
+
+    Comment::create([
+        'user_id' => Auth::id(),
+        'product_id' => $id,
+        'content' => $request->content,
+    ]);
+
+    return redirect()->route('product.show', $id);
+    }
 }
