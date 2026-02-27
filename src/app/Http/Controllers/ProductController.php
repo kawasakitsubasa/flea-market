@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Like;
 
 class ProductController extends Controller
 {
@@ -21,7 +22,7 @@ class ProductController extends Controller
         'image_url' => ['nullable', 'url'], 
     ]);
 
-    Product::create([
+         $product = Product::create([
         'user_id' => Auth::id(),
         'name' => $request->name,
         'brand' => $request->brand,
@@ -52,7 +53,7 @@ class ProductController extends Controller
     }
     public function show($id)
     {
-        $product = Product::with(['categories', 'comments.user'])
+        $product = Product::with(['categories', 'comments.user', 'likes'])
         ->findOrFail($id);
 
         return view('product.show', compact('product'));
@@ -73,5 +74,28 @@ class ProductController extends Controller
     ]);
 
     return redirect()->route('product.show', $id);
+    }
+
+    public function toggleLike($id)
+    {
+    $product = Product::findOrFail($id);
+
+    $userId = Auth::id();
+
+    // すでにいいねしてるか確認
+    $like = Like::where('user_id', $userId)
+        ->where('product_id', $id)   
+        ->first();
+
+    if ($like) {
+        $like->delete(); 
+    } else {
+        Like::create([
+            'user_id' => $userId,
+            'product_id' => $id,     
+        ]);
+    }
+
+    return back();
     }
 }

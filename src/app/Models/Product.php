@@ -35,5 +35,21 @@ class Product extends Model
     {
         return $this->hasMany(\App\Models\Comment::class);
     }
+
+    public function likes()
+    {
+        return $this->hasMany(\App\Models\Like::class);
+    }
+    public function likedUsers()
+    {
+    return $this->belongsToMany(\App\Models\User::class, 'likes')->withTimestamps();
+    }
+
+    public function isLikedByAuthUser()
+    {
+        return $this->likes()
+                    ->where('user_id', auth()->id())
+                    ->exists();
+    }
 }
 
