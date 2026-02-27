@@ -49,6 +49,35 @@
         <p class="price">
             ¥{{ number_format($product->price) }} <span>（税込）</span>
         </p>
+    <div class="icon-area">
+
+    {{-- ❤️ いいね --}}
+       <div class="icon-box">
+        @auth
+            <form action="{{ route('product.like', $product->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="icon-button">
+                    @if($product->likes->where('user_id', auth()->id())->count())
+                        <img src="{{ asset('images/ハートロゴ_ピンク.png') }}" alt="いいね" class="icon-img">
+                    @else
+                        <img src="{{ asset('images/ハートロゴ_デフォルト.png') }}" alt="いいね" class="icon-img">
+                    @endif
+                </button>
+            </form>
+        @else
+            <img src="{{ asset('images/ハートロゴ_デフォルト.png') }}" alt="いいね" class="icon-img">
+        @endauth
+
+        <p class="icon-count">{{ $product->likes->count() }}</p>
+      </div>
+
+    {{-- 💬 コメント --}}
+       <div class="icon-box">
+        <img src="{{ asset('images/comment.png') }}" alt="コメント" class="icon-img">
+        <p class="icon-count">{{ $product->comments->count() }}</p>
+       </div>
+
+    </div>
 
         <button class="buy-button">購入手続きへ</button>
 

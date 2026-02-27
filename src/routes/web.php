@@ -11,7 +11,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// 🔥 商品詳細（ログイン不要にする）
+// 商品詳細（ログイン不要）
 Route::get('/product/{id}', [ProductController::class, 'show'])
     ->name('product.show');
 
@@ -23,14 +23,14 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
 
-// 認証済みユーザー専用
+// 🔐 認証ユーザー専用
 Route::middleware(['auth'])->group(function () {
 
     // マイページ
     Route::get('/mypage', [ProductController::class, 'mypage'])
         ->name('mypage');
 
-    // プロフィールページ
+    // プロフィール
     Route::get('/profile', function () {
         $products = Product::latest()->get();
         return view('profile', compact('products'));
@@ -49,8 +49,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sell', [ProductController::class, 'store'])
         ->name('sell.store');
 
-    Route::middleware(['auth'])->group(function () {
+    // コメント投稿
     Route::post('/product/{id}/comment', [ProductController::class, 'commentStore'])
         ->name('product.comment.store');
-    });
+
+    // ❤️ いいねトグル
+    Route::post('/product/{id}/like', [ProductController::class, 'toggleLike'])
+        ->name('product.like');
 });
