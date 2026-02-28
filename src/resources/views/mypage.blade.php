@@ -38,7 +38,12 @@
     <a href="{{ route('product.show', $product->id) }}" class="product-link">
       <div class="product-item">
         <div class="product-image">
-          <img src="{{ $product->image }}" alt="{{ $product->name }}">
+
+           @if($product->purchase)
+              <div class="sold-badge">SOLD</div>
+           @endif
+
+            <img src="{{ $product->image }}" alt="{{ $product->name }}">
         </div>
 
         <div class="product-info">
