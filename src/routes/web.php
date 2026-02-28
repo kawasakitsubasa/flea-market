@@ -32,9 +32,15 @@ Route::middleware(['auth'])->group(function () {
 
     // プロフィール
     Route::get('/profile', function () {
-        $products = Product::latest()->get();
-        return view('profile', compact('products'));
-    })->name('profile');
+
+    $user = auth()->user();
+
+    $sellingProducts = $user->products;
+    $purchasedProducts = $user->purchases()->with('product')->get();
+
+    return view('profile', compact('sellingProducts', 'purchasedProducts'));
+
+     })->name('profile');
 
     // プロフィール編集
     Route::get('/profile/setup', [ProfileController::class, 'setup'])->name('profile.setup');
@@ -56,4 +62,11 @@ Route::middleware(['auth'])->group(function () {
     // ❤️ いいねトグル
     Route::post('/product/{id}/like', [ProductController::class, 'toggleLike'])
         ->name('product.like');
+
+    // 🛒 購入画面
+    Route::get('/product/{id}/purchase', [ProductController::class, 'purchase'])
+        ->name('product.purchase');
+    
+    Route::post('/product/{id}/purchase', [ProductController::class, 'purchaseStore'])
+    ->name('product.purchase.store');
 });

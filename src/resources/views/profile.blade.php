@@ -45,7 +45,7 @@
         <!-- 出品商品 -->
         <div id="sell" class="tab-content active">
            <div class="product-list">
-        @forelse ($products as $product)
+        @forelse ($sellingProducts as $product)
             <div class="product-item">
                 <div class="product-image">
                     <img src="{{ $product->image }}" alt="{{ $product->name }}">
@@ -61,7 +61,18 @@
 <!-- 購入商品（今はダミー） -->
     <div id="buy" class="tab-content">
        <div class="product-list">
-        <p>購入した商品はまだありません</p>
+        @forelse ($purchasedProducts as $purchase)
+           <div class="product-item">
+               <div class="product-image">
+                   <img src="{{ $purchase->product->image }}" alt="">
+               </div>
+               <div class="product-name">
+                   {{ $purchase->product->name }}
+               </div>
+           </div>
+        @empty
+            <p>購入した商品はまだありません</p>
+        @endforelse
        </div>
     </div>
     </main>

@@ -79,7 +79,9 @@
 
     </div>
 
-        <button class="buy-button">購入手続きへ</button>
+        <a href="{{ route('product.purchase', $product->id) }}" class="buy-button">
+            購入手続きへ
+        </a>
 
         <h2>商品説明</h2>
         <p>{{ $product->description }}</p>

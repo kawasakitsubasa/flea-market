@@ -116,6 +116,7 @@ header nav button:last-child {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .product-image img {
@@ -167,4 +168,17 @@ header nav button:last-child {
   text-align: center;
   color: #666;
   padding: 40px 0;
+}
+
+.sold-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 10;
 }

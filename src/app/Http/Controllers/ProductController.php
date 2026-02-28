@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Like;
+use App\Models\Purchase;
 
 class ProductController extends Controller
 {
@@ -47,9 +48,9 @@ class ProductController extends Controller
     }
     public function mypage()
     {
-        $products = Auth::user()->products()->latest()->get();
+    $products = Product::with('purchase')->latest()->get();
 
-        return view('mypage', compact('products'));
+    return view('mypage', compact('products'));
     }
     public function show($id)
     {
@@ -97,5 +98,35 @@ class ProductController extends Controller
     }
 
     return back();
+    }
+
+    public function purchase($id)
+    {
+      $product = Product::findOrFail($id);
+
+      $user = Auth::user();
+
+      return view('product.purchase', compact('product', 'user'));
+    }
+    public function purchaseStore(Request $request, $id)
+    {
+    $request->validate([
+        'payment_method' => 'required'
+    ]);
+
+    $product = Product::findOrFail($id);
+    $user = Auth::user();
+
+    Purchase::create([
+        'user_id' => $user->id,
+        'product_id' => $product->id,
+        'payment_method' => $request->payment_method,
+        'zipcode' => $user->zipcode,
+        'address' => $user->address,
+        'building' => $user->building,
+    ]);
+
+    return redirect()->route('mypage')
+    ->with('success', '購入が完了しました');
     }
 }
