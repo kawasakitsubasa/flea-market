@@ -59,5 +59,31 @@ class ProfileController extends Controller
     return view('profile.edit', compact('user'));
     }
 
+    public function editAddress(Request $request)
+    {
+      $product_id = $request->query('product_id');
+
+      return view('purchase.address', compact('product_id'));
+    }
+
+    public function updateAddress(Request $request)
+    {
+    $request->validate([
+        'zipcode' => ['required'],
+        'address' => ['required'],
+        'building' => ['nullable'],
+    ]);
+
+    $user = Auth::user();
+
+    $user->zipcode = $request->zipcode;
+    $user->address = $request->address;
+    $user->building = $request->building;
+    $user->save();
+
+    return redirect()->route('product.purchase', $request->product_id)
+        ->with('success', '住所を更新しました');
+    }
+
 
 }
