@@ -58,16 +58,18 @@
 
         <h3>
             配送先
-            <a href="{{ route('profile.edit') }}">変更する</a>
+            <a href="{{ route('purchase.address.edit', ['product_id' => $product->id]) }}">
+               変更する
+            </a>
         </h3>
 
         <p>
-            〒 {{ $user->zipcode ?? '未登録' }}
+            〒 {{ auth()->user()->zipcode ?? '未登録' }}
         </p>
 
         <p>
-            {{ $user->address ?? '' }}
-            {{ $user->building ?? '' }}
+            {{ auth()->user()->address ?? '' }}
+            {{ auth()->user()->building ?? '' }}
         </p>
 
     </div>

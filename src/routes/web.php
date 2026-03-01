@@ -69,4 +69,11 @@ Route::middleware(['auth'])->group(function () {
     
     Route::post('/product/{id}/purchase', [ProductController::class, 'purchaseStore'])
     ->name('product.purchase.store');
+
+        // 🏠 住所変更（購入用）
+    Route::get('/purchase/address/edit', [ProfileController::class, 'editAddress'])
+        ->name('purchase.address.edit');
+
+    Route::put('/purchase/address/update', [ProfileController::class, 'updateAddress'])
+        ->name('purchase.address.update');
 });

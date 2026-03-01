@@ -102,11 +102,11 @@ class ProductController extends Controller
 
     public function purchase($id)
     {
-      $product = Product::findOrFail($id);
+    $product = Product::findOrFail($id);
 
-      $user = Auth::user();
+    $user = \App\Models\User::find(auth()->id());
 
-      return view('product.purchase', compact('product', 'user'));
+    return view('purchase', compact('product', 'user'));
     }
     public function purchaseStore(Request $request, $id)
     {
