@@ -23,12 +23,13 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
 
+    Route::get('/mypage', [ProductController::class, 'mypage'])
+        ->name('mypage');
+
 // 🔐 認証ユーザー専用
 Route::middleware(['auth'])->group(function () {
 
-    // マイページ
-    Route::get('/mypage', [ProductController::class, 'mypage'])
-        ->name('mypage');
+    
 
     // プロフィール
     Route::get('/profile', function () {
@@ -69,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
     
     Route::post('/product/{id}/purchase', [ProductController::class, 'purchaseStore'])
     ->name('product.purchase.store');
+    Route::post('/stripe/checkout/{id}', [ProductController::class, 'stripeCheckout'])
+    ->name('stripe.checkout');
 
         // 🏠 住所変更（購入用）
     Route::get('/purchase/address/edit', [ProfileController::class, 'editAddress'])

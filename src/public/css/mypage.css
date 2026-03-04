@@ -182,3 +182,24 @@ header nav button:last-child {
   border-radius: 4px;
   z-index: 10;
 }
+
+.tab-content{
+display:none;
+}
+
+.tab-content.active{
+display:block;
+}
+
+.tab-button{
+background:none;
+border:none;
+font-size:16px;
+cursor:pointer;
+padding:10px 20px;
+}
+
+.tab-button.active{
+color:red;
+border-bottom:2px solid red;
+}
