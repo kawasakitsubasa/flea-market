@@ -89,7 +89,7 @@
             </div>
         </div>
 
-        <form method="POST" action="{{ route('product.purchase.store', $product->id) }}">
+        <form method="POST" action="{{ route('stripe.checkout', $product->id) }}">
             @csrf
 
             <input type="hidden" name="payment_method" id="hidden-payment">
