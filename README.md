@@ -46,3 +46,86 @@
 
 ## ER図
 
+ER図
+
+```mermaid
+erDiagram
+
+users {
+  bigint id PK
+  string name
+  string email
+  string password
+  string zipcode
+  string address
+  string building
+  string avatar
+  boolean is_profile_set
+  timestamps
+}
+
+products {
+  bigint id PK
+  bigint user_id FK
+  string name
+  string brand
+  text description
+  integer price
+  string condition
+  string image
+  timestamps
+}
+
+categories {
+  bigint id PK
+  string name
+  timestamps
+}
+
+category_product {
+  bigint id PK
+  bigint product_id FK
+  bigint category_id FK
+}
+
+comments {
+  bigint id PK
+  bigint user_id FK
+  bigint product_id FK
+  text content
+  timestamps
+}
+
+likes {
+  bigint id PK
+  bigint user_id FK
+  bigint product_id FK
+  timestamps
+}
+
+purchases {
+  bigint id PK
+  bigint user_id FK
+  bigint product_id FK
+  string payment_method
+  string zipcode
+  string address
+  string building
+  timestamps
+}
+
+users ||--o{ products : 出品
+users ||--o{ comments : コメント
+users ||--o{ likes : いいね
+users ||--o{ purchases : 購入
+
+products ||--o{ comments : コメント
+products ||--o{ likes : いいね
+products ||--|| purchases : 購入
+
+products ||--o{ category_product : ""
+categories ||--o{ category_product : ""
+```
+
+---
+
