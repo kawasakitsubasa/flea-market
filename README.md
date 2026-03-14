@@ -51,6 +51,18 @@ ER図
 ```mermaid
 erDiagram
 
+users ||--o{ products : 出品
+users ||--o{ comments : コメント
+users ||--o{ likes : いいね
+users ||--o{ purchases : 購入
+
+products ||--o{ comments : コメント
+products ||--o{ likes : いいね
+products ||--|| purchases : 購入
+
+products ||--o{ category_product : ""
+categories ||--o{ category_product : ""
+
 users {
   bigint id PK
   string name
@@ -114,18 +126,5 @@ purchases {
   timestamps
 }
 
-users ||--o{ products : 出品
-users ||--o{ comments : コメント
-users ||--o{ likes : いいね
-users ||--o{ purchases : 購入
 
-products ||--o{ comments : コメント
-products ||--o{ likes : いいね
-products ||--|| purchases : 購入
-
-products ||--o{ category_product : ""
-categories ||--o{ category_product : ""
-```
-
----
 
