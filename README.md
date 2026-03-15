@@ -46,86 +46,84 @@
 
 ## ER図
 
-ER図
+## ER図
 
 ```mermaid
 erDiagram
 
-users {
-  bigint id PK
-  string name
-  string email
-  string password
-  string zipcode
-  string address
-  string building
-  string avatar
-  boolean is_profile_set
-  timestamps
+USERS {
+    bigint id
+    string name
+    string email
+    string password
+    string zipcode
+    string address
+    string building
+    string avatar
+    boolean is_profile_set
+    timestamps
 }
 
-products {
-  bigint id PK
-  bigint user_id FK
-  string name
-  string brand
-  text description
-  integer price
-  string condition
-  string image
-  timestamps
+PRODUCTS {
+    bigint id
+    bigint user_id
+    string name
+    string brand
+    text description
+    integer price
+    string condition
+    string image
+    timestamps
 }
 
-categories {
-  bigint id PK
-  string name
-  timestamps
+CATEGORIES {
+    bigint id
+    string name
+    timestamps
 }
 
-category_product {
-  bigint id PK
-  bigint product_id FK
-  bigint category_id FK
+CATEGORY_PRODUCT {
+    bigint product_id
+    bigint category_id
 }
 
-comments {
-  bigint id PK
-  bigint user_id FK
-  bigint product_id FK
-  text content
-  timestamps
+COMMENTS {
+    bigint id
+    bigint user_id
+    bigint product_id
+    text content
+    timestamps
 }
 
-likes {
-  bigint id PK
-  bigint user_id FK
-  bigint product_id FK
-  timestamps
+LIKES {
+    bigint id
+    bigint user_id
+    bigint product_id
+    timestamps
 }
 
-purchases {
-  bigint id PK
-  bigint user_id FK
-  bigint product_id FK
-  string payment_method
-  string zipcode
-  string address
-  string building
-  timestamps
+PURCHASES {
+    bigint id
+    bigint user_id
+    bigint product_id
+    string payment_method
+    string zipcode
+    string address
+    string building
+    timestamps
 }
 
-users ||--o{ products : 出品
-users ||--o{ comments : コメント
-users ||--o{ likes : いいね
-users ||--o{ purchases : 購入
+USERS ||--o{ PRODUCTS : exhibits
+USERS ||--o{ COMMENTS : writes
+USERS ||--o{ LIKES : likes
+USERS ||--o{ PURCHASES : buys
 
-products ||--o{ comments : コメント
-products ||--o{ likes : いいね
-products ||--|| purchases : 購入
+PRODUCTS ||--o{ COMMENTS : has
+PRODUCTS ||--o{ LIKES : has
+PRODUCTS ||--|| PURCHASES : purchased
 
-products ||--o{ category_product : ""
-categories ||--o{ category_product : ""
+PRODUCTS ||--o{ CATEGORY_PRODUCT : ""
+CATEGORIES ||--o{ CATEGORY_PRODUCT : ""
 ```
 
----
 
