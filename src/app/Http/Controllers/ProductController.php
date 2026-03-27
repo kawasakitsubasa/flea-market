@@ -22,7 +22,7 @@ class ProductController extends Controller
         'description' => ['required'],
         'price' => ['required', 'integer'],
         'condition' => ['required'],
-        'image' => ['required', 'image'], // ← 変更
+        'image' => ['required', 'mimes:jpeg,jpg,png,webp'],
     ]);
 
     // 画像アップロード処理
